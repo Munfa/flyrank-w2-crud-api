@@ -28,16 +28,26 @@ The server starts on `http://localhost:8000`. Interactive docs (Swagger UI) are 
 ## Example request
 
 ```bash
-curl.exe -i -X POST http://localhost:8000/tasks -H "Content-Type: application/json" -d "{\"title\":\"Buy milk\"}"
+curl.exe -i http://localhost:8000/tasks/1                                      
 ```
 
-![Try_it_out POST](post_task.png)
+```bash
+HTTP/1.1 200 OK
+date: Sat, 05 Sep 2026 07:05:58 GMT
+server: uvicorn
+content-length: 42
+content-type: application/json
+
+{"id":1,"title":"Do homework","done":true}
+```
 
 ## Swagger UI
 
 `/docs` lists every endpoint and lets you run the full CRUD cycle interactively via "Try it out."
 
 ![Swagger UI](docs_ui.png)
+
+![Try_it_out POST](post_task.png)
 
 ## Design notes
 

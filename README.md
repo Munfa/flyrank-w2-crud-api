@@ -58,3 +58,13 @@ content-type: application/json
 
 ## Adding Extras: filtering, search, stats, reset
 Filtering and Search worked fine. Stats showed exactly how many tasks are added in the list, and how many are marked Done. Reset shows the original task list clearing the newly added tasks. Because these are not added in a database, so they only exist in the server memory. Reset falls back to the initial task list because the added tasks are not saved anywhere to retrive from.
+
+## AI vs Me
+<strong>Full Prompt</strong>: Build a to-do list using python and fastapi. have these endpoints, get tasks, create tasks, get tasks by id, update tasks, delete tasks. it should run in fastapi's swagger UI. I should be able to try it out. have these for each task, id[int], title[str], and done[bool]. for successful retrieval the status code return 200, for delete it return 201, for unknown id returns 400 and so on. give me the code so I can add as main.py and should be able to run with uvicorn.
+
+<strong>Differences</strong>:
+| AI | ME |
+|----|----|
+| Client has to supply id | Generated server-side id |
+| Doesn't check if the title is an empty string | Checks for white space |
+| Updates id, title, and done from the client side | Updates only the title finding the task by id |

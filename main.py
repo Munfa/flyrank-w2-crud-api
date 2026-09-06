@@ -1,10 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional
+import copy
 
 app = FastAPI()
 
 tasks = [
+    {'id': 1, 'title': 'Do homework', 'done': True},
+    {'id': 2, 'title': 'Clean the room', 'done': False},
+    {'id': 3, 'title': 'Water the plants', 'done': False}
+]
+
+initial_tasks = [
     {'id': 1, 'title': 'Do homework', 'done': True},
     {'id': 2, 'title': 'Clean the room', 'done': False},
     {'id': 3, 'title': 'Water the plants', 'done': False}
@@ -28,8 +35,14 @@ async def health():
     return { "status": "ok" }
 
 @app.get("/tasks")
-async def get_tasks():
-    return tasks
+async def get_tasks(done: Optional[bool] = None, search: Optional[str] = None):
+    result = tasks
+    if done is not None:
+        result = [t for t in result if t['done'] == done]
+    if search is not None:
+        result = [t for t in result if search.lower() in t['title'].lower()]
+    return result
+    
 
 @app.get("/tasks/{task_id}")
 async def get_task(task_id: int):
@@ -37,6 +50,18 @@ async def get_task(task_id: int):
         if task['id'] == task_id:
             return task
     raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+
+@app.get("/stats")
+async def get_stats():
+    total = len(tasks)
+    done = sum(1 for t in tasks if t['done'])
+    return f"Total: {total}, Done: {done}, Open: {total - done}"
+
+@app.get("/reset")
+async def reset_tasks():
+    tasks.clear()
+    tasks.extend(copy.deepcopy(initial_tasks))
+    return {"Status": "reset", "Tasks" : tasks}
 
 @app.post("/tasks", status_code=201)
 def create_task(task: TaskCreate):

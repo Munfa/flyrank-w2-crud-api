@@ -54,5 +54,7 @@ content-type: application/json
 - `done` is always `false` on creation; the client cannot set it via POST.
 - PUT accepts partial updates — sending only `{"done": true}` will not clear an existing title. Both fields are optional; only fields actually present in the request body are applied.
 - An empty or whitespace-only `title` is rejected with 400 on both POST and PUT.
-- Data is in-memory only. Restarting the server clears all tasks — this is expected for this stage of the project (a database is introduced in Week 3).
+- Data is in-memory only. Restarting the server clears all tasks.
 
+## Adding Extras: filtering, search, stats, reset
+Filtering and Search worked fine. Stats showed exactly how many tasks are added in the list, and how many are marked Done. Reset shows the original task list clearing the newly added tasks. Because these are not added in a database, so they only exist in the server memory. Reset falls back to the initial task list because the added tasks are not saved anywhere to retrive from.
